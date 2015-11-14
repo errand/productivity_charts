@@ -1,0 +1,4 @@
+name = Productivity Charts
+package = Custom
+description = Выводим таблицей информацию о производительности редакторов
+core = 7.x

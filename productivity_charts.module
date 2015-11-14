@@ -1,0 +1,158 @@
+<?php
+/**
+ * Implements hook_block_info().
+ */
+function productivity_charts_block_info() {
+  $blocks = array();
+  
+  $blocks['productivity_charts'] = array(
+    'info' => t('Productivity Charts'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+   
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function productivity_charts_block_view($name) {
+  
+  if ($name == 'productivity_charts') {
+	$today = mktime(0, 0, 0, date("m")  , date("d"), date("Y"));
+	$two_weeks = mktime(0, 0, 0, date("m")  , date("d")-14, date("Y"));
+	$three_weeks = mktime(0, 0, 0, date("m")  , date("d")-21, date("Y"));
+	$last_week = mktime(0, 0, 0, date("m")  , date("d")-7, date("Y"));
+	$last_month = mktime(0, 0, 0, date("m")-1  , date("d"), date("Y"));
+	$two_months = mktime(0, 0, 0, date("m")-2  , date("d"), date("Y"));
+	$three_months = mktime(0, 0, 0, date("m")-3  , date("d"), date("Y"));
+	$four_months = mktime(0, 0, 0, date("m")-4  , date("d"), date("Y"));
+	$five_months = mktime(0, 0, 0, date("m")-5  , date("d"), date("Y"));
+	$six_months = mktime(0, 0, 0, date("m")-6  , date("d"), date("Y"));
+	
+	$type = "article";
+	
+	$week_articles = db_query('SELECT count(type) AS node_type, users_node.uid AS users_node_uid, users_node.name AS users_node_name, sum(node_counter.totalcount) AS node_counter_totalcount FROM {node} node LEFT JOIN {node_counter} node_counter ON node.nid = node_counter.nid LEFT JOIN {users} users_node ON node.uid = users_node.uid INNER JOIN {users_roles} users_node__users_roles ON users_node.uid = users_node__users_roles.uid WHERE node.status = 1 AND node.type = :article AND users_node__users_roles.rid = 17 AND (node.created BETWEEN :start_time AND :end_time) GROUP BY users_node_name, users_node_uid', array(':start_time' => $last_week, ':end_time' => $today,':article' => $type))
+        ->fetchAll();
+		
+	$two_weeks_articles = db_query('SELECT count(type) AS node_type, users_node.uid AS users_node_uid, users_node.name AS users_node_name, sum(node_counter.totalcount) AS node_counter_totalcount FROM {node} node LEFT JOIN {node_counter} node_counter ON node.nid = node_counter.nid LEFT JOIN {users} users_node ON node.uid = users_node.uid INNER JOIN {users_roles} users_node__users_roles ON users_node.uid = users_node__users_roles.uid WHERE node.status = 1 AND node.type = :article AND users_node__users_roles.rid = 17 AND (node.created BETWEEN :start_time AND :end_time) GROUP BY users_node_name, users_node_uid', array(':start_time' => $two_weeks, ':end_time' => $last_week,':article' => $type))
+        ->fetchAll();
+		
+	$three_weeks_articles = db_query('SELECT count(type) AS node_type, users_node.uid AS users_node_uid, users_node.name AS users_node_name, sum(node_counter.totalcount) AS node_counter_totalcount FROM {node} node LEFT JOIN {node_counter} node_counter ON node.nid = node_counter.nid LEFT JOIN {users} users_node ON node.uid = users_node.uid INNER JOIN {users_roles} users_node__users_roles ON users_node.uid = users_node__users_roles.uid WHERE node.status = 1 AND node.type = :article AND users_node__users_roles.rid = 17 AND (node.created BETWEEN :start_time AND :end_time) GROUP BY users_node_name, users_node_uid', array(':start_time' => $three_weeks, ':end_time' => $two_weeks,':article' => $type))
+        ->fetchAll();
+		
+	$last_month_articles = db_query('SELECT count(type) AS node_type, users_node.uid AS users_node_uid, users_node.name AS users_node_name, sum(node_counter.totalcount) AS node_counter_totalcount FROM {node} node LEFT JOIN {node_counter} node_counter ON node.nid = node_counter.nid LEFT JOIN {users} users_node ON node.uid = users_node.uid INNER JOIN {users_roles} users_node__users_roles ON users_node.uid = users_node__users_roles.uid WHERE node.status = 1 AND node.type = :article AND users_node__users_roles.rid = 17 AND (node.created BETWEEN :start_time AND :end_time) GROUP BY users_node_name, users_node_uid', array(':start_time' => $last_month, ':end_time' => $three_weeks,':article' => $type))
+        ->fetchAll();
+		
+	$two_month_articles = db_query('SELECT count(type) AS node_type, users_node.uid AS users_node_uid, users_node.name AS users_node_name, sum(node_counter.totalcount) AS node_counter_totalcount FROM {node} node LEFT JOIN {node_counter} node_counter ON node.nid = node_counter.nid LEFT JOIN {users} users_node ON node.uid = users_node.uid INNER JOIN {users_roles} users_node__users_roles ON users_node.uid = users_node__users_roles.uid WHERE node.status = 1 AND node.type = :article AND users_node__users_roles.rid = 17 AND (node.created BETWEEN :start_time AND :end_time) GROUP BY users_node_name, users_node_uid', array(':start_time' => $two_months, ':end_time' => $last_month,':article' => $type))
+        ->fetchAll();
+		
+	$three_month_articles = db_query('SELECT count(type) AS node_type, users_node.uid AS users_node_uid, users_node.name AS users_node_name, sum(node_counter.totalcount) AS node_counter_totalcount FROM {node} node LEFT JOIN {node_counter} node_counter ON node.nid = node_counter.nid LEFT JOIN {users} users_node ON node.uid = users_node.uid INNER JOIN {users_roles} users_node__users_roles ON users_node.uid = users_node__users_roles.uid WHERE node.status = 1 AND node.type = :article AND users_node__users_roles.rid = 17 AND (node.created BETWEEN :start_time AND :end_time) GROUP BY users_node_name, users_node_uid', array(':start_time' => $three_months, ':end_time' => $two_months,':article' => $type))
+        ->fetchAll();
+		
+	$four_month_articles = db_query('SELECT count(type) AS node_type, users_node.uid AS users_node_uid, users_node.name AS users_node_name, sum(node_counter.totalcount) AS node_counter_totalcount FROM {node} node LEFT JOIN {node_counter} node_counter ON node.nid = node_counter.nid LEFT JOIN {users} users_node ON node.uid = users_node.uid INNER JOIN {users_roles} users_node__users_roles ON users_node.uid = users_node__users_roles.uid WHERE node.status = 1 AND node.type = :article AND users_node__users_roles.rid = 17 AND (node.created BETWEEN :start_time AND :end_time) GROUP BY users_node_name, users_node_uid', array(':start_time' => $four_months, ':end_time' => $three_months,':article' => $type))
+        ->fetchAll();
+		
+	$five_month_articles = db_query('SELECT count(type) AS node_type, users_node.uid AS users_node_uid, users_node.name AS users_node_name, sum(node_counter.totalcount) AS node_counter_totalcount FROM {node} node LEFT JOIN {node_counter} node_counter ON node.nid = node_counter.nid LEFT JOIN {users} users_node ON node.uid = users_node.uid INNER JOIN {users_roles} users_node__users_roles ON users_node.uid = users_node__users_roles.uid WHERE node.status = 1 AND node.type = :article AND users_node__users_roles.rid = 17 AND (node.created BETWEEN :start_time AND :end_time) GROUP BY users_node_name, users_node_uid', array(':start_time' => $five_months, ':end_time' => $four_months,':article' => $type))
+        ->fetchAll();
+		
+	$six_month_articles = db_query('SELECT count(type) AS node_type, users_node.uid AS users_node_uid, users_node.name AS users_node_name, sum(node_counter.totalcount) AS node_counter_totalcount FROM {node} node LEFT JOIN {node_counter} node_counter ON node.nid = node_counter.nid LEFT JOIN {users} users_node ON node.uid = users_node.uid INNER JOIN {users_roles} users_node__users_roles ON users_node.uid = users_node__users_roles.uid WHERE node.status = 1 AND node.type = :article AND users_node__users_roles.rid = 17 AND (node.created BETWEEN :start_time AND :end_time) GROUP BY users_node_name, users_node_uid', array(':start_time' => $six_months, ':end_time' => $five_months,':article' => $type))
+        ->fetchAll();
+	
+			
+	dpm($week_articles);
+
+	drupal_add_css(drupal_get_path('module', 'productivity_charts') . '/css/pro_chart.css');
+	
+	$content = '
+	<h2>Last week</h2>
+	<table id="prod-table"><tr id="tb-header"><td>Name</td><td>Articles</td><td>Views</td><td>V/A</td></tr>';
+foreach($week_articles as $week_row)
+	{
+  
+	$content .= '<tr><th>'.$week_row->users_node_name.'</th><td>'.$week_row->node_type.'</td><td>'.$week_row->node_counter_totalcount.'</td><td>'.number_format($week_row->node_counter_totalcount / $week_row->node_type, 0, "", "").'</td></tr>';
+	
+    }
+    $content .= '</table>
+	<h2>Last 2 weeks</h2>
+	<table id="prod-table"><tr id="tb-header"><td>Name</td><td>Articles</td><td>Views</td><td>V/A</td></tr>';
+foreach($two_weeks_articles as $two_weeks_row)
+	{
+  
+	$content .= '<tr><th>'.$two_weeks_row->users_node_name.'</th><td>'.$two_weeks_row->node_type.'</td><td>'.$two_weeks_row->node_counter_totalcount.'</td><td>'.number_format($two_weeks_row->node_counter_totalcount / $two_weeks_row->node_type, 0, "", "").'</td></tr>';
+	
+    }
+    $content .= '</table>
+	<h2>Last 3 weeks</h2>
+	<table id="prod-table"><tr id="tb-header"><td>Name</td><td>Articles</td><td>Views</td><td>V/A</td></tr>';
+foreach($three_weeks_articles as $three_weeks_row)
+	{
+  
+	$content .= '<tr><th>'.$three_weeks_row->users_node_name.'</th><td>'.$three_weeks_row->node_type.'</td><td>'.$three_weeks_row->node_counter_totalcount.'</td><td>'.number_format($three_weeks_row->node_counter_totalcount / $three_weeks_row->node_type, 0, "", "").'</td></tr>';
+	
+    }
+    $content .= '</table>
+	<h2>Last month</h2>
+	<table id="prod-table"><tr id="tb-header"><td>Name</td><td>Articles</td><td>Views</td><td>V/A</td></tr>';
+foreach($last_month_articles as $month_row)
+	{
+  
+	$content .= '<tr><th>'.$month_row->users_node_name.'</th><td>'.$month_row->node_type.'</td><td>'.$month_row->node_counter_totalcount.'</td><td>'.number_format($month_row->node_counter_totalcount / $month_row->node_type, 0, "", "").'</td></tr>';
+	
+    }
+    $content .= '</table>
+	<h2>Two months ago</h2>
+	<table id="prod-table"><tr id="tb-header"><td>Name</td><td>Articles</td><td>Views</td><td>V/A</td></tr>';
+foreach($two_month_articles as $two_month_row)
+	{
+  
+	$content .= '<tr><th>'.$two_month_row->users_node_name.'</th><td>'.$two_month_row->node_type.'</td><td>'.$two_month_row->node_counter_totalcount.'</td><td>'.number_format($two_month_row->node_counter_totalcount / $two_month_row->node_type, 0, "", "").'</td></tr>';
+	
+    }
+    $content .= '</table>
+	<h2>Three months ago</h2>
+	<table id="prod-table"><tr id="tb-header"><td>Name</td><td>Articles</td><td>Views</td><td>V/A</td></tr>';
+foreach($three_month_articles as $three_month_row)
+	{
+  
+	$content .= '<tr><th>'.$three_month_row->users_node_name.'</th><td>'.$three_month_row->node_type.'</td><td>'.$three_month_row->node_counter_totalcount.'</td><td>'.number_format($three_month_row->node_counter_totalcount / $three_month_row->node_type, 0, "", "").'</td></tr>';
+	
+    }
+    $content .= '</table>
+	<h2>Four months ago</h2>
+	<table id="prod-table"><tr id="tb-header"><td>Name</td><td>Articles</td><td>Views</td><td>V/A</td></tr>';
+foreach($four_month_articles as $four_month_row)
+	{
+  
+	$content .= '<tr><th>'.$four_month_row->users_node_name.'</th><td>'.$four_month_row->node_type.'</td><td>'.$four_month_row->node_counter_totalcount.'</td><td>'.number_format($four_month_row->node_counter_totalcount / $four_month_row->node_type, 0, "", "").'</td></tr>';
+	
+    }
+    $content .= '</table>
+	<h2>Five months ago</h2>
+	<table id="prod-table"><tr id="tb-header"><td>Name</td><td>Articles</td><td>Views</td><td>V/A</td></tr>';
+foreach($five_month_articles as $five_month_row)
+	{
+  
+	$content .= '<tr><th>'.$five_month_row->users_node_name.'</th><td>'.$five_month_row->node_type.'</td><td>'.$five_month_row->node_counter_totalcount.'</td><td>'.number_format($five_month_row->node_counter_totalcount / $five_month_row->node_type, 0, "", "").'</td></tr>';
+	
+    }
+    $content .= '</table>
+	<h2>Six months ago</h2>
+	<table id="prod-table"><tr id="tb-header"><td>Name</td><td>Articles</td><td>Views</td><td>V/A</td></tr>';
+foreach($six_month_articles as $six_month_row)
+	{
+  
+	$content .= '<tr><th>'.$six_month_row->users_node_name.'</th><td>'.$six_month_row->node_type.'</td><td>'.$six_month_row->node_counter_totalcount.'</td><td>'.number_format($six_month_row->node_counter_totalcount / $six_month_row->node_type, 0, "", "").'</td></tr>';
+	
+    }
+    $content .= '</table>
+	';
+				
+    $block = array(
+      'subject' => t('Productivity Charts'),
+      'content' => $content,
+    );
+    
+    return $block;
+  }
+  }

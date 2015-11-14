@@ -1,0 +1,8 @@
+#prod-table{width:100%;border-top:1px solid #ccc;border-left:1px solid #ccc;}
+#prod-table th{vertical-align:top;background:#eee;}
+#prod-table td, #prod-table th{border-bottom:1px solid #ccc;border-right:1px solid #ccc;padding:10px;}
+#tb-header th{text-align:center}
+#prod-table .pt-week{background:#FFFF99;}
+#prod-table .pt-month{background:#CC9999;}
+#prod-table .pt-two-months{background:#CC99CC;}
+#prod-table .pt-total{background:#99FF99;}

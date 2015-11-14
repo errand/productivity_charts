@@ -1,0 +1,5 @@
+This module is designed to work with Drupal7.
+This module is made to track working statistics of users with role "counter". It counts how many articles was published in different time intervals: from 1 week to 6 months and how many views they get.
+TODO
+-add date filter
+-add interface to change content type and user roles
